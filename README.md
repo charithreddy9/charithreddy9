@@ -16,19 +16,19 @@
 
 ## 🚀 Featured AI/ML engineering projects
 
-EvidenceDesk now has its own standalone repository; RiskLens remains a project folder. **Both are prototypes under active development—not deployed products.**
+EvidenceDesk has a [public Render deployment](https://evidencedesk-ai.onrender.com) (demo verification pending); RiskLens remains a locally runnable prototype. Both are still under active development.
 
 ### 01 · [EvidenceDesk — Citation-Grounded AI Knowledge Workspace](https://github.com/charithreddy9/EvidenceDesk-AI)
 
 > **Applied AI / RAG-style retrieval / Full-stack development**
 
-A knowledge assistant with document ingestion, source-linked evidence, explicit abstention, and optional LLM-based synthesis.
+A document knowledge assistant deployed on Render, with FastAPI, React, SQLite-backed document ingestion, lexical retrieval, optional semantic embeddings, source citations, and citation-checked LLM synthesis. The hosted free demo uses the TF-IDF baseline and sample documents.
 
 **Built with:** Python · FastAPI · scikit-learn TF-IDF · React · Vite · optional OpenAI API
 
-**Engineering details:** in-memory document indexing, cosine retrieval, input validation, source passages, offline evaluation script, API tests, and a responsive interface.
+**Engineering details:** document persistence, file parsing, cosine retrieval, input validation, source passages, retrieval evaluation, automated API tests, Docker deployment, and responsive UI.
 
-[**View source & setup →**](https://github.com/charithreddy9/EvidenceDesk-AI) · [Retrieval implementation](https://github.com/charithreddy9/EvidenceDesk-AI/backend/retrieval.py) · [Evaluation script](https://github.com/charithreddy9/EvidenceDesk-AI/backend/evaluate.py)
+[**Live Demo →**](https://evidencedesk-ai.onrender.com) · [Source & Setup](https://github.com/charithreddy9/EvidenceDesk-AI) · [Retrieval implementation](https://github.com/charithreddy9/EvidenceDesk-AI/blob/main/backend/retrieval.py) · [Evaluation script](https://github.com/charithreddy9/EvidenceDesk-AI/blob/main/backend/evaluate.py)
 
 ### 02 · [RiskLens — Transaction Risk ML Analytics Dashboard](./projects/risklens)
 
