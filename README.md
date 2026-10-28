@@ -16,9 +16,9 @@
 
 ## 🚀 Featured AI/ML engineering projects
 
-New projects are hosted in independent, runnable folders here for now. They will become standalone repositories as the portfolio develops. **Both are prototypes under active development—not deployed products.**
+EvidenceDesk now has its own standalone repository; RiskLens remains a project folder. **Both are prototypes under active development—not deployed products.**
 
-### 01 · [EvidenceDesk — Citation-Grounded AI Knowledge Workspace](./projects/evidencedesk)
+### 01 · [EvidenceDesk — Citation-Grounded AI Knowledge Workspace](https://github.com/charithreddy9/EvidenceDesk-AI)
 
 > **Applied AI / RAG-style retrieval / Full-stack development**
 
@@ -28,7 +28,7 @@ A knowledge assistant with document ingestion, source-linked evidence, explicit 
 
 **Engineering details:** in-memory document indexing, cosine retrieval, input validation, source passages, offline evaluation script, API tests, and a responsive interface.
 
-[**View source & setup →**](./projects/evidencedesk) · [Retrieval implementation](./projects/evidencedesk/backend/retrieval.py) · [Evaluation script](./projects/evidencedesk/backend/evaluate.py)
+[**View source & setup →**](https://github.com/charithreddy9/EvidenceDesk-AI) · [Retrieval implementation](https://github.com/charithreddy9/EvidenceDesk-AI/backend/retrieval.py) · [Evaluation script](https://github.com/charithreddy9/EvidenceDesk-AI/backend/evaluate.py)
 
 ### 02 · [RiskLens — Transaction Risk ML Analytics Dashboard](./projects/risklens)
 
@@ -86,7 +86,7 @@ My portfolio aims to provide **real implementation evidence, not just screenshot
 1. Validate CI and add integration test coverage.
 2. Add real public benchmark datasets with clear licensing, robust ML evaluation, and per-case error analysis.
 3. Add containers, polished screenshots, deployed demos, and observability.
-4. Publish each flagship project as its own repository and pin the strongest ones.
+4. Publish RiskLens as its own repository and pin the strongest projects.
 
 ---
 
