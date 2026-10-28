@@ -1,73 +1,109 @@
-# EvidenceDesk — Citation-Grounded AI Knowledge Workspace
+# EvidenceDesk — Full-Stack AI Document Intelligence
 
-**Stage:** runnable full-stack prototype. Not deployed; not production-ready.
+**Status: developing portfolio prototype · NOT yet publicly deployed · NOT production-secure**
 
-A document-question-answering application using a **scikit-learn TF-IDF retriever**, **FastAPI**, and a responsive **React** interface. Supports text ingestion, source-grounded excerpts, abstention, and **optional LLM synthesis via the OpenAI API**.
+Document-question answering with **FastAPI + React**, SQLite-backed source records, PDF/TXT/Markdown ingestion, and transparent retrieval. Three *explicitly configured* retrieval backends:
+
+- `tfidf`: fully offline lexical retrieval; default, works without embedding model or API keys.
+- `sentence-transformers`: **real local semantic embeddings** (default all-MiniLM-L6-v2). Requires `backend/requirements-semantic.txt` and downloading model weights during initial setup.
+- `openai`: **real hosted semantic embeddings** via `text-embedding-3-small`; requires paid `OPENAI_API_KEY`.
+
+Optional **OpenAI LLM** synthesis is prompted to cite retrieved passages. Citation numbers are validated; factual entailment is **not** independently verified. Uncited answers and unknown citation markers cause abstention.
 
 ## Architecture
 
 ```text
-React/Vite UI ──► FastAPI ──► In-memory text ingestion + chunking
-                              │
-                         TF-IDF index
-                              │
-                      Cosine top-k retrieval
-                              │
-              ┌───────────────┴───────────────┐
-          Extractive mode              Optional OpenAI mode
-              └───────────────┬───────────────┘
-                     Answer + source excerpts
+Browser / React ─► Nginx (proxy /api) ─► FastAPI ─► SQLite documents
+                                              │
+                                   Page-aware text chunking
+                                              │
+                                   Explicitly selected retriever
+                        ┌─────────────────────┼──────────────────────┐
+                    TF-IDF                Local embeddings       OpenAI embeddings
+                        └─────────────────────┼──────────────────────┘
+                                     Ranked source passages
+                                              │
+                              Extractive answer OR optional LLM
+                                              │
+                                Validated reference markers [1]
 ```
 
-### Why this project matters
-It demonstrates end-to-end AI product engineering, retrieval evaluation, API design, grounded responses, validation, and front-end UX, rather than only a notebook. Four **fictional sample policies** are bundled for reproducible demos.
+Sources are stored persistently. The in-process vector index is rebuilt on startup and after uploads or deletion; **embeddings are not yet persisted**. This is a single-instance demo, not a scalable vector database system.
 
-## Local setup
+## Quick start: Docker (recommended)
 
-Requires Python 3.10+ and Node.js 20+.
+From `projects/evidencedesk`:
 
 ```bash
-# From this project directory
+cp .env.example .env
+# Edit .env and replace ADMIN_TOKEN with a long random secret
+docker compose up --build
+```
+
+Browse **http://localhost:8080**. Compose intentionally binds to loopback only; use a TLS-terminating reverse proxy and additional hardening for any public deployment. Paste the same `ADMIN_TOKEN` into the app's token field to access protected endpoints and upload documents. The token stays in React state (not local storage). Do **not** embed the token in the frontend bundle.
+
+For local embeddings, change `RETRIEVAL_BACKEND=sentence-transformers` and `INSTALL_SEMANTIC=true` in `.env`, then rebuild. First model download requires internet and increases image size/startup latency.
+
+For OpenAI embeddings, use `RETRIEVAL_BACKEND=openai` and set `OPENAI_API_KEY`. LLM synthesis uses the same server-side key and can incur charges.
+
+## Local development without Docker
+
+Requires Python 3.11+ and Node.js 22+.
+
+```bash
 python -m venv .venv
-# Linux/macOS: source .venv/bin/activate
+# macOS/Linux: source .venv/bin/activate
 # Windows: .venv\Scripts\activate
 pip install -r backend/requirements-dev.txt
+# For local semantic inference, also install: pip install -r backend/requirements-semantic.txt
+# Optional: set ADMIN_TOKEN in your environment before launching
 uvicorn backend.app:app --reload --port 8000
 ```
 
-Open a second terminal:
+In a second terminal:
 
 ```bash
 cd frontend
 npm install
+# Direct local backend from Vite: create frontend/.env.local containing:
+# VITE_API_BASE_URL=http://localhost:8000
 npm run dev
 ```
 
-Open http://localhost:5173. API docs: http://localhost:8000/docs.
+API reference in development: **http://localhost:8000/docs**.
 
-**Optional LLM mode:** set `OPENAI_API_KEY` in the backend environment, optionally `OPENAI_MODEL`. This invokes a paid external API. Without a key, extractive retrieval works fully offline. The app never exposes the key to the browser.
+## API
 
-## APIs
+| Endpoint | Notes |
+| --- | --- |
+| `GET /api/health` | Unauthenticated health |
+| `GET /api/config` | Retriever and feature capability flags |
+| `GET /api/documents` | Document list; titles/IDs and chunk counts |
+| `POST /api/upload` | Ingest PDF, TXT, or MD, max 2 MiB; write protection applies |
+| `POST /api/documents` | JSON text ingestion |
+| `DELETE /api/documents/{id}` | Delete user-imported docs (seed documents protected) |
+| `POST /api/ask` | Top-k retrieval; optional `generate: true` LLM synthesis |
 
-| Method | Route | Purpose |
-| --- | --- | --- |
-| GET | `/api/health` | API/index health |
-| GET | `/api/documents` | List indexed document titles |
-| POST | `/api/documents` | Ingest an 80–12,000-character text document |
-| POST | `/api/ask` | Retrieve sources and return answer; `generate: true` enables LLM |
+`ADMIN_TOKEN` protects read/write endpoints via `Authorization: Bearer …`; **without a token, read-only sample mode is enabled by default**. In a public deployment, always set a strong token. This is basic single-tenant protection, not production identity or RBAC.
 
-## Evaluation and tests
+## Quality checks
 
 ```bash
 python -m pytest backend/tests -q
 python -m backend.evaluate
+cd frontend && npm run build
 ```
 
-The evaluation performs **hit@3 checks against five hand-written questions** with known source IDs. This toy set is only a development regression check—not a validated production retrieval benchmark. A missing match leads to explicit abstention; overlapping keywords can still cause false positives.
+CI runs offline TF-IDF tests, including a deterministic fake encoder test for the semantic retrieval integration. Real external embedding model loading and hosted API calls are **not covered in CI** and must be evaluated separately.
 
-## Tradeoffs and next milestones
+## Limitations and roadmap
 
-- In-memory, unauthenticated text ingestion is **local demo only**; every restart removes user uploads. Do not upload private or sensitive documents.
-- TF-IDF is lexical, not semantic embedding-based retrieval; synonym and multi-hop questions can fail.
-- LLM citations are prompt-guided, **not independently verified**; downstream citation validation is future work.
-- Next: persisted document storage, PDF parsing, embeddings + reranking, a labeled retrieval benchmark, per-user authorization, rate limits, prompt-injection tests, containerization, and deployment.
+- Four **fictional sample policies** and a five-question toy retrieval evaluation. No claims of real-world benchmark accuracy.
+- PDF extraction only handles text-based PDFs, not scanned documents/OCR.
+- TF-IDF or embedding cosine score is **not a calibrated confidence score**. Retrieval thresholds are development heuristics, and semantic search can return semantically related but irrelevant chunks.
+- LLM citation marker validation does not guarantee factual accuracy; rigorous faithfulness evaluation and adversarial prompt-injection tests remain to be done.
+- SQLite and in-process vector index are single-instance; process restarts rebuild the model index.
+- Shared admin token, no per-user authorization, rate limits, virus scanning, document redaction, audit logs, or distributed storage. **Do not ingest sensitive or regulated documents in an untrusted deployment.**
+- Planned next: persistent vector store (pgvector), reranking, evaluated semantic retrieval on benchmark data, OAuth/OIDC login, durable ingest jobs, audit trails, and public deployment with hardened ingress.
+
+**This repository lives under `charithreddy9/charithreddy9/projects/evidencedesk` until a dedicated `EvidenceDesk-AI` repository is created.**

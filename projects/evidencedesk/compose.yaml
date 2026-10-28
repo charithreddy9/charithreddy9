@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      args:
+        INSTALL_SEMANTIC: ${INSTALL_SEMANTIC:-false}
+    environment:
+      DATA_DB_PATH: /app/data/evidencedesk.sqlite3
+      RETRIEVAL_BACKEND: ${RETRIEVAL_BACKEND:-tfidf}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      OPENAI_EMBEDDING_MODEL: ${OPENAI_EMBEDDING_MODEL:-text-embedding-3-small}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set a long random ADMIN_TOKEN in your .env file}
+      ENABLE_API_DOCS: "false"
+    volumes:
+      - evidence-data:/app/data
+      - model-cache:/home/appuser/.cache
+    restart: unless-stopped
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_BASE_URL: ""
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  evidence-data:
+  model-cache:
