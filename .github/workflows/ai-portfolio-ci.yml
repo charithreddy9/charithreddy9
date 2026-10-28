@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r projects/${{ matrix.project }}/backend/requirements-dev.txt
       - name: Run unit and API tests
-        run: python -m pytest projects/${{ matrix.project }}/backend/tests -q
+        run: python -m pytest backend/tests -q
         working-directory: projects/${{ matrix.project }}
       - name: Run ML evaluation
         run: python -m backend.evaluate
