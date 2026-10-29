@@ -36,6 +36,18 @@ I kept the project intentionally lightweight: it runs on a laptop CPU, publishes
 
 > The results describe a synthetic noise experiment on a small dataset—not broad claims about model robustness in production.
 
+### 📬 [ActionInbox](https://github.com/charithreddy9/ActionInbox) — Turning email into tasks, with a human in control
+
+**Python · FastAPI · scikit-learn · React · SQLite · GitHub Actions**
+
+ActionInbox finds possible action items, categories, and due dates in pasted emails or imported `.eml` files. Instead of silently creating reminders, it shows the supporting sentence and lets you edit or reject every suggestion before saving it.
+
+The local TF-IDF / logistic regression model was evaluated on 27 hand-written synthetic messages: **21/27 intent classifications correct**. The false positives and confusion matrix are documented rather than hidden. The repository includes automated API tests and a checked frontend build.
+
+**[Explore the code and demo instructions](https://github.com/charithreddy9/ActionInbox)** · **[Inspect evaluation results](https://github.com/charithreddy9/ActionInbox/blob/main/research/RESEARCH.md)** · **[GitHub Actions](https://github.com/charithreddy9/ActionInbox/actions)**
+
+> Local-first prototype only. No Gmail integration or automatic reminders; its small synthetic test is not a real-world inbox benchmark.
+
 ## Other work
 
 - **[Flex Living Reviews Dashboard](https://github.com/charithreddy9/FlexLiving-Reviews-Dashboard):** a full-stack review analytics and reporting application.
