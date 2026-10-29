@@ -1,93 +1,63 @@
-<div align="center">
+# Hi, I'm Sai Charith Reddy Yaredla 👋
 
-# Sai Charith Reddy Yaredla
-### Full-Stack AI/ML Engineer · Applied Machine Learning · LLM Applications · AI Product Engineering
+I'm a software engineer interested in the intersection of **machine learning, applied AI, and backend engineering**. I like building things I can test and explain—not just getting a model to return an answer, but figuring out when that answer is reliable.
 
-**I build AI-powered products end to end:** from reproducible data and model evaluation to Python APIs, responsive interfaces, testing, and delivery.
+Recently, I've been focusing on two sides of AI work: building source-grounded systems people can use, and running small, reproducible experiments to understand where ML models fail.
 
-[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-149ECA?logo=react&logoColor=white)](https://react.dev)
-[![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://docker.com)
+## Projects I'm most excited about
 
-</div>
+### 🔎 [EvidenceDesk-AI](https://github.com/charithreddy9/EvidenceDesk-AI) — Finding answers without making them up
 
-## 🚀 Featured AI/ML engineering projects
+**Python · FastAPI · React · BGE-small / FastEmbed · TF-IDF · SQLite · Docker**
 
-EvidenceDesk has a [public Render deployment](https://evidencedesk-ai.onrender.com) (demo verification pending); RiskLens remains a locally runnable prototype. Both are still under active development.
+I built EvidenceDesk to explore a common problem with document search: finding a relevant-looking passage doesn't necessarily mean it answers the question.
 
-### 01 · [EvidenceDesk — Citation-Grounded AI Knowledge Workspace](https://github.com/charithreddy9/EvidenceDesk-AI)
+I started with keyword retrieval, added local semantic embeddings, and tested where both approaches struggled. The hybrid staging version combines BGE-small with TF-IDF, checks evidence before answering, and quotes the source sentence. If the documents don't contain enough information, it abstains rather than guessing.
 
-> **Applied AI / RAG-style retrieval / Full-stack development**
+The part I'm particularly proud of is the evaluation loop. I kept the failed questions visible, measured how stricter filtering affected recall, and added automated checks for both answerable and unanswerable cases.
 
-A document knowledge assistant deployed on Render, with FastAPI, React, SQLite-backed document ingestion, lexical retrieval, optional semantic embeddings, source citations, and citation-checked LLM synthesis. The hosted free demo uses the TF-IDF baseline and sample documents.
+**[Try the hybrid demo](https://evidencedesk-ai-staging-bge.onrender.com)** · **[Explore the code and evaluation](https://github.com/charithreddy9/EvidenceDesk-AI/tree/staging-fastembed)** · **[CI checks](https://github.com/charithreddy9/EvidenceDesk-AI/actions)**
 
-**Built with:** Python · FastAPI · scikit-learn TF-IDF · React · Vite · optional OpenAI API
+> The demo uses four fictional policies. Its small, manually authored evaluation set is a regression check, not a real-world accuracy benchmark. The default `main` deployment is a separate, simpler TF-IDF baseline.
 
-**Engineering details:** document persistence, file parsing, cosine retrieval, input validation, source passages, retrieval evaluation, automated API tests, Docker deployment, and responsive UI.
+### 📊 [ShiftScope](https://github.com/charithreddy9/ShiftScope) — What happens to model confidence when data changes?
 
-[**Live Demo →**](https://evidencedesk-ai.onrender.com) · [Source & Setup](https://github.com/charithreddy9/EvidenceDesk-AI) · [Retrieval implementation](https://github.com/charithreddy9/EvidenceDesk-AI/blob/main/backend/retrieval.py) · [Evaluation script](https://github.com/charithreddy9/EvidenceDesk-AI/blob/main/backend/evaluate.py)
+**Python · scikit-learn · NumPy · SciPy · Matplotlib · GitHub Actions**
 
-### 02 · [RiskLens — Transaction Risk ML Analytics Dashboard](./projects/risklens)
+ShiftScope is a small ML research project built around a question I wanted to investigate: **when a classifier becomes less accurate, does its confidence become less trustworthy too?**
 
-> **Machine learning / Classification / Model evaluation / Full-stack inference**
+I trained logistic regression and random forest models on the scikit-learn handwritten-digits dataset, then gradually corrupted only the test images. I compared accuracy, calibration error, selective risk, and conformal prediction-set coverage across multiple random seeds.
 
-An ML-backed risk scoring dashboard using **fictional synthetic financial transactions**. Compare a boosted-tree classifier with a logistic-regression baseline and inspect validation metrics.
+In this controlled experiment, logistic regression accuracy dropped from about **96.6% on clean digits to 38.4% under strong noise**. The observed coverage of its nominal 90% conformal prediction sets also fell considerably. That matters because the usual coverage guarantee depends on assumptions violated by this test-time shift.
 
-**Built with:** Python · scikit-learn · NumPy · FastAPI · React · Vite
+I kept the project intentionally lightweight: it runs on a laptop CPU, publishes charts and an experiment report, and has automated reproducibility checks.
 
-**Engineering details:** deterministic data generation, stratified train/validation split, precision-recall evaluation, ROC AUC, global permutation importance, typed API inputs, dashboard, and tests.
+**[Read the experiment](https://github.com/charithreddy9/ShiftScope)** · **[View results](https://github.com/charithreddy9/ShiftScope/blob/main/results/report.md)** · **[Reproducibility CI](https://github.com/charithreddy9/ShiftScope/actions)**
 
-[**View source & setup →**](./projects/risklens) · [Modeling pipeline](./projects/risklens/backend/model.py) · [Evaluation script](./projects/risklens/backend/evaluate.py)
+> The results describe a synthetic noise experiment on a small dataset—not broad claims about model robustness in production.
 
-### 03 · [CineMatch — Movie Recommendation System](https://github.com/charithreddy9/Movie-recommendation)
+## Other work
 
-> **Recommendation algorithms / Full-stack ML prototype**
+- **[Flex Living Reviews Dashboard](https://github.com/charithreddy9/FlexLiving-Reviews-Dashboard):** a full-stack review analytics and reporting application.
+- **[CineMatch / Movie Recommendation](https://github.com/charithreddy9/Movie-recommendation):** a content-based recommendation prototype using similarity search.
+- **[RiskLens](https://github.com/charithreddy9/charithreddy9/tree/main/projects/risklens):** a synthetic transaction-risk classification and dashboard prototype.
 
-Content-based recommendation using TF-IDF cosine similarity with a FastAPI serving layer and React interface. Uses a small fictional movie catalog for demonstration.
+## Tools I work with
 
-[**Open repository →**](https://github.com/charithreddy9/Movie-recommendation)
+| Area | Technologies |
+| --- | --- |
+| **Machine learning & evaluation** | Python, scikit-learn, NumPy, statistical metrics, calibration, experiment design |
+| **Applied AI** | Embeddings, semantic search, retrieval, source-grounded answers, evaluation |
+| **Backend** | FastAPI, Java, Spring Boot, SQL, REST APIs |
+| **Frontend** | React, JavaScript / TypeScript |
+| **Engineering** | GitHub Actions, Docker, automated tests, reproducible builds, AWS / Azure |
 
-### 04 · [Flex Living Reviews Dashboard](https://github.com/charithreddy9/FlexLiving-Reviews-Dashboard)
+## What I'm working toward
 
-> **Full-stack software engineering / Data visualization**
+I'm interested in **AI/ML engineer, applied scientist, and research-oriented software engineering** roles. I'm especially drawn to work where good experiments and careful measurement matter as much as implementation.
 
-Existing React/TypeScript + Node/Express application featuring review normalization, filtering, dashboard reporting, and REST API integration.
-
-[**Open repository →**](https://github.com/charithreddy9/FlexLiving-Reviews-Dashboard)
-
----
-
-## 🧠 Engineering focus
-
-| Area | Core technologies |
-|---|---|
-| Applied AI | Retrieval-augmented generation, prompt design, LLM APIs, embeddings concepts, evaluation |
-| ML engineering | scikit-learn, feature engineering, classification, recommendation, model metrics |
-| Backend systems | Python, FastAPI, Java/Spring Boot, Node.js, REST APIs, PostgreSQL |
-| Frontend | React, TypeScript, JavaScript, responsive UI |
-| Engineering practices | Automated testing, GitHub Actions, Docker, reproducible experiments, cloud workflows |
-
-## 🔍 How to evaluate my work
-
-My portfolio aims to provide **real implementation evidence, not just screenshots**:
-
-- **Run it:** each project contains local instructions and a self-contained backend/frontend.
-- **Inspect it:** ML pipeline, API contracts, data-generation logic, and source files are linked above.
-- **Test it:** code-level automated tests and evaluation scripts are included.
-- **Understand it:** project READMEs document tradeoffs, limitations, next steps, and dataset provenance.
-
-**Current limitations:** new projects have not yet been production-deployed; their frontend builds and cross-environment CI are being validated. RiskLens uses exclusively synthetic financial data; EvidenceDesk contains fictional policy documents and uses lexical retrieval with optional LLM synthesis. No real-world model performance is claimed.
-
-## 📍 Next build milestones
-
-1. Validate CI and add integration test coverage.
-2. Add real public benchmark datasets with clear licensing, robust ML evaluation, and per-case error analysis.
-3. Add containers, polished screenshots, deployed demos, and observability.
-4. Publish RiskLens as its own repository and pin the strongest projects.
+Next on my list: evaluating ShiftScope on a more realistic distribution shift, and testing EvidenceDesk with genuinely new documents and independently labeled answers.
 
 ---
 
-**Let's build useful AI systems that people can inspect, test, and trust.**
+*I enjoy understanding why a system works—and being able to show the evidence when it doesn't.*
