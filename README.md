@@ -1,75 +1,72 @@
-# Hi, I'm Sai Charith Reddy Yaredla 👋
+# Hi, I'm Sai Charith 👋
 
-I'm a software engineer interested in the intersection of **machine learning, applied AI, and backend engineering**. I like building things I can test and explain—not just getting a model to return an answer, but figuring out when that answer is reliable.
+I'm a software engineer who enjoys backend development, machine learning, and figuring out why a system behaves the way it does.
 
-Recently, I've been focusing on two sides of AI work: building source-grounded systems people can use, and running small, reproducible experiments to understand where ML models fail.
+Lately I've been building small AI tools and running experiments alongside them. The interesting part for me usually starts after the first version works: What happens when someone phrases a question differently? What does the model do with unfamiliar data? How do you catch a bad prediction before it becomes a bad user experience?
 
-## Projects I'm most excited about
+Here are a few projects I've been working on.
 
-### 🔎 [EvidenceDesk-AI](https://github.com/charithreddy9/EvidenceDesk-AI) — Finding answers without making them up
+## Things I've built
 
-**Python · FastAPI · React · BGE-small / FastEmbed · TF-IDF · SQLite · Docker**
+### [EvidenceDesk-AI](https://github.com/charithreddy9/EvidenceDesk-AI) — Document search that shows its sources
 
-I built EvidenceDesk to explore a common problem with document search: finding a relevant-looking passage doesn't necessarily mean it answers the question.
+**Python, FastAPI, React, SQLite, BGE-small, TF-IDF, Docker**
 
-I started with keyword retrieval, added local semantic embeddings, and tested where both approaches struggled. The hybrid staging version combines BGE-small with TF-IDF, checks evidence before answering, and quotes the source sentence. If the documents don't contain enough information, it abstains rather than guessing.
+I wanted to build a document Q&A app that could point to the exact sentence behind an answer, rather than just return something that sounded convincing.
 
-The part I'm particularly proud of is the evaluation loop. I kept the failed questions visible, measured how stricter filtering affected recall, and added automated checks for both answerable and unanswerable cases.
+The first version used keyword search. It handled direct questions reasonably well but missed some paraphrases, so I tried local sentence embeddings. That helped with wording differences, but it introduced another problem: related-looking passages weren't always the *right* evidence.
 
-**[Try the hybrid demo](https://evidencedesk-ai-staging-bge.onrender.com)** · **[Explore the code and evaluation](https://github.com/charithreddy9/EvidenceDesk-AI/tree/staging-fastembed)** · **[CI checks](https://github.com/charithreddy9/EvidenceDesk-AI/actions)**
+I ended up combining semantic and keyword retrieval with a lightweight evidence check. The app now returns a quoted sentence and its source when it finds enough support, and says so when it doesn't. I also built an evaluation page to look at failed cases rather than relying only on an overall score.
 
-> The demo uses four fictional policies. Its small, manually authored evaluation set is a regression check, not a real-world accuracy benchmark. The default `main` deployment is a separate, simpler TF-IDF baseline.
+The demo uses four fictional policy documents, so the results are useful for testing this particular system—not a claim about how well it would perform on every company's documents.
 
-### 📊 [ShiftScope](https://github.com/charithreddy9/ShiftScope) — What happens to model confidence when data changes?
+[Try the semantic demo](https://evidencedesk-ai-staging-bge.onrender.com) · [See the implementation](https://github.com/charithreddy9/EvidenceDesk-AI/tree/staging-fastembed) · [Tests and CI](https://github.com/charithreddy9/EvidenceDesk-AI/actions)
 
-**Python · scikit-learn · NumPy · SciPy · Matplotlib · GitHub Actions**
+*The semantic version runs on a separate staging branch. The public production baseline uses TF-IDF.*
 
-ShiftScope is a small ML research project built around a question I wanted to investigate: **when a classifier becomes less accurate, does its confidence become less trustworthy too?**
+### [ShiftScope](https://github.com/charithreddy9/ShiftScope) — A small study of model confidence under data shift
 
-I trained logistic regression and random forest models on the scikit-learn handwritten-digits dataset, then gradually corrupted only the test images. I compared accuracy, calibration error, selective risk, and conformal prediction-set coverage across multiple random seeds.
+**Python, scikit-learn, NumPy, SciPy, Matplotlib**
 
-In this controlled experiment, logistic regression accuracy dropped from about **96.6% on clean digits to 38.4% under strong noise**. The observed coverage of its nominal 90% conformal prediction sets also fell considerably. That matters because the usual coverage guarantee depends on assumptions violated by this test-time shift.
+This one started with a question: if an ML model becomes less accurate, does its confidence change in a useful way?
 
-I kept the project intentionally lightweight: it runs on a laptop CPU, publishes charts and an experiment report, and has automated reproducibility checks.
+I used the handwritten-digits dataset to compare logistic regression and random forest classifiers. I kept training and calibration data clean, gradually added noise to the test images, and measured accuracy, calibration error, selective risk, and conformal prediction-set coverage.
 
-**[Read the experiment](https://github.com/charithreddy9/ShiftScope)** · **[View results](https://github.com/charithreddy9/ShiftScope/blob/main/results/report.md)** · **[Reproducibility CI](https://github.com/charithreddy9/ShiftScope/actions)**
+One result that stood out: logistic regression accuracy went from about **96.6% on clean images to 38.4% under heavy noise**. Its observed conformal coverage also fell well below the nominal 90% target once the test data shifted.
 
-> The results describe a synthetic noise experiment on a small dataset—not broad claims about model robustness in production.
+It's a deliberately small experiment, but I wanted to make the methodology and limitations easy to inspect. The code runs on a CPU, the plots can be regenerated, and GitHub Actions reruns the study.
 
-### 📬 [ActionInbox](https://github.com/charithreddy9/ActionInbox) — Turning email into tasks, with a human in control
+[Read the research notes](https://github.com/charithreddy9/ShiftScope/blob/main/RESEARCH.md) · [See the results and plots](https://github.com/charithreddy9/ShiftScope/blob/main/results/report.md) · [Source code](https://github.com/charithreddy9/ShiftScope)
 
-**Python · FastAPI · scikit-learn · React · SQLite · GitHub Actions**
+### [ActionInbox](https://github.com/charithreddy9/ActionInbox) — Turning emails into tasks, without losing control
 
-ActionInbox finds possible action items, categories, and due dates in pasted emails or imported `.eml` files. Instead of silently creating reminders, it shows the supporting sentence and lets you edit or reject every suggestion before saving it.
+**Python, FastAPI, scikit-learn, React, SQLite**
 
-The local TF-IDF / logistic regression model was evaluated on 27 hand-written synthetic messages: **21/27 intent classifications correct**. The false positives and confusion matrix are documented rather than hidden. The repository includes automated API tests and a checked frontend build.
+I wanted a simple way to pull follow-ups out of emails without giving an app permission to do things automatically.
 
-**[Explore the code and demo instructions](https://github.com/charithreddy9/ActionInbox)** · **[Inspect evaluation results](https://github.com/charithreddy9/ActionInbox/blob/main/research/RESEARCH.md)** · **[GitHub Actions](https://github.com/charithreddy9/ActionInbox/actions)**
+ActionInbox takes pasted email text or an `.eml` file and suggests an action, category, and possible due date. It shows the supporting text, then lets you edit or dismiss the suggestion before anything is saved.
 
-> Local-first prototype only. No Gmail integration or automatic reminders; its small synthetic test is not a real-world inbox benchmark.
+The first classifier got **21 out of 27** hand-written synthetic test messages right. That's not enough to trust it on a real inbox, and the mistakes are worth looking at. I included the evaluation report and confusion matrix for that reason.
 
-## Other work
+There isn't a Gmail connection or automatic sending in this version. Keeping it local and review-first was a conscious choice.
 
-- **[Flex Living Reviews Dashboard](https://github.com/charithreddy9/FlexLiving-Reviews-Dashboard):** a full-stack review analytics and reporting application.
-- **[CineMatch / Movie Recommendation](https://github.com/charithreddy9/Movie-recommendation):** a content-based recommendation prototype using similarity search.
-- **[RiskLens](https://github.com/charithreddy9/charithreddy9/tree/main/projects/risklens):** a synthetic transaction-risk classification and dashboard prototype.
+[Explore ActionInbox](https://github.com/charithreddy9/ActionInbox) · [Evaluation notes](https://github.com/charithreddy9/ActionInbox/blob/main/research/RESEARCH.md) · [CI checks](https://github.com/charithreddy9/ActionInbox/actions)
 
-## Tools I work with
+## Other projects
 
-| Area | Technologies |
-| --- | --- |
-| **Machine learning & evaluation** | Python, scikit-learn, NumPy, statistical metrics, calibration, experiment design |
-| **Applied AI** | Embeddings, semantic search, retrieval, source-grounded answers, evaluation |
-| **Backend** | FastAPI, Java, Spring Boot, SQL, REST APIs |
-| **Frontend** | React, JavaScript / TypeScript |
-| **Engineering** | GitHub Actions, Docker, automated tests, reproducible builds, AWS / Azure |
+- [Flex Living Reviews Dashboard](https://github.com/charithreddy9/FlexLiving-Reviews-Dashboard) — a full-stack dashboard for reviewing and filtering guest feedback.
+- [Movie Recommendation](https://github.com/charithreddy9/Movie-recommendation) — a content-based recommendation prototype.
+- [RiskLens](https://github.com/charithreddy9/charithreddy9/tree/main/projects/risklens) — an ML dashboard built with synthetic transaction data.
 
-## What I'm working toward
+## What I use
 
-I'm interested in **AI/ML engineer, applied scientist, and research-oriented software engineering** roles. I'm especially drawn to work where good experiments and careful measurement matter as much as implementation.
+- **Python and ML:** scikit-learn, NumPy, model evaluation, embeddings, information retrieval
+- **Backend:** FastAPI, Java, Spring Boot, SQL, REST APIs
+- **Frontend:** React, JavaScript, TypeScript
+- **Development:** Git, GitHub Actions, Docker, automated tests, AWS and Azure
 
-Next on my list: evaluating ShiftScope on a more realistic distribution shift, and testing EvidenceDesk with genuinely new documents and independently labeled answers.
+## What I'm learning next
 
----
+I want to test EvidenceDesk against documents I haven't used while developing it, try ShiftScope on more realistic kinds of distribution shift, and improve ActionInbox's handling of ambiguous requests and dates.
 
-*I enjoy understanding why a system works—and being able to show the evidence when it doesn't.*
+I'm interested in **AI/ML engineering, applied ML research, and backend software engineering**. I enjoy work where I can build the system, test the assumptions behind it, and explain what the results actually mean.
