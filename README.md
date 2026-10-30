@@ -48,9 +48,9 @@ ActionInbox began as an explainable email-to-task baseline. Its TF-IDF classifie
 
 The experimental **v5 development branch** adds **local LLM-driven extraction**: the model reads up to five manually selected emails together and proposes *zero, one or multiple* tasks, context-specific categories, deadlines and related-event groupings. The backend validates JSON structure, source IDs, date format and source quotations; tasks remain editable and **nothing is saved until approved**.
 
-The model runs locally through Ollama without a paid AI endpoint. Automated backend/frontend checks pass, but **real-model accuracy has not been benchmarked**, and the first local inference encountered an HTTP 503 that still needs runtime verification. The older keyword radar remains available while the LLM workflow is evaluated.
+The model runs locally through Ollama without a paid AI endpoint. The branch now includes an **18-case fictional-email evaluation harness** and a reproducible demo guide. Automated backend/frontend checks pass, but **real-model accuracy has not been benchmarked**, and the first local inference encountered an HTTP 503 that still needs runtime verification. The older keyword radar remains available while the LLM workflow is evaluated.
 
-[See the v5 implementation and setup](https://github.com/charithreddy9/ActionInbox/tree/feature/llm-email-intelligence) · [Automated checks](https://github.com/charithreddy9/ActionInbox/actions/workflows/ci.yml?query=branch%3Afeature%2Fllm-email-intelligence) · [Original stable baseline](https://github.com/charithreddy9/ActionInbox/tree/main)
+[See the v5 implementation and setup](https://github.com/charithreddy9/ActionInbox/tree/feature/llm-email-intelligence) · [Fictional-email benchmark & demo](https://github.com/charithreddy9/ActionInbox/blob/feature/llm-email-intelligence/DEMO.md) · [Automated checks](https://github.com/charithreddy9/ActionInbox/actions/workflows/ci.yml?query=branch%3Afeature%2Fllm-email-intelligence) · [Original stable baseline](https://github.com/charithreddy9/ActionInbox/tree/main)
 
 
 ## Other projects
