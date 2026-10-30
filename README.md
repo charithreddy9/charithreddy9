@@ -1,10 +1,12 @@
 # Hi, I'm Sai Charith 👋
 
-I'm a software engineer who enjoys backend development, machine learning, and figuring out why a system behaves the way it does.
+**Software Engineer | Applied AI & Machine Learning | Backend Systems**
 
-Lately I've been building small AI tools and running experiments alongside them. The interesting part for me usually starts after the first version works: What happens when someone phrases a question differently? What does the model do with unfamiliar data? How do you catch a bad prediction before it becomes a bad user experience?
+I build practical AI/ML applications and measurable experiments — from **source-grounded document retrieval** to **model reliability under distribution shift** and **local LLM email intelligence**. I enjoy the full engineering loop: designing a baseline, building the API and interface, testing where it fails, and making limitations visible.
 
-Here are a few projects I've been working on.
+**Focus:** Python · FastAPI · scikit-learn · local LLMs / Ollama · semantic retrieval · evaluation · React · SQL · Docker · GitHub Actions
+
+**Featured work:** [EvidenceDesk-AI](https://github.com/charithreddy9/EvidenceDesk-AI) · [ShiftScope](https://github.com/charithreddy9/ShiftScope) · [ActionInbox](https://github.com/charithreddy9/ActionInbox/tree/feature/llm-email-intelligence)
 
 ## Things I've built
 
@@ -38,21 +40,18 @@ It's a deliberately small experiment, but I wanted to make the methodology and l
 
 [Read the research notes](https://github.com/charithreddy9/ShiftScope/blob/main/RESEARCH.md) · [See the results and plots](https://github.com/charithreddy9/ShiftScope/blob/main/results/report.md) · [Source code](https://github.com/charithreddy9/ShiftScope)
 
-### [ActionInbox](https://github.com/charithreddy9/ActionInbox) — A quieter way to turn inbox reminders into tasks
+### [ActionInbox](https://github.com/charithreddy9/ActionInbox/tree/feature/llm-email-intelligence) — Local LLM email-to-task intelligence
 
-**Python, FastAPI, scikit-learn, React, SQLite, Gmail API (optional)**
+**Python · FastAPI · Ollama / Qwen3 4B · scikit-learn · React · SQLite · Gmail API (read-only)**
 
-ActionInbox started as a local tool for turning a pasted email into a task I could review before saving. The first version used a small TF-IDF classifier and date rules; it scored **21/27 on an author-written synthetic category check**. That result exposed a bigger challenge than making a polished interface: a classifier can confidently mistake informational messages for things you need to do.
+ActionInbox began as an explainable email-to-task baseline. Its TF-IDF classifier achieved **21/27 (77.8%)** on a small, author-written **synthetic intent-category test**, which surfaced false positives and the limits of matching isolated sentences. I then added optional Gmail read-only OAuth and a user-triggered Smart Inbox Radar, fixing edge cases such as promotional payment offers, completed confirmations, and duplicate pickup reminders.
 
-I added optional **read-only Gmail access** on a separate development branch. You choose when to search or scan, inspect the original message, correct suggested dates and categories, and explicitly approve any task saved to local SQLite. The app doesn't send email, change your inbox, scan in the background, or call a paid AI service.
+The experimental **v5 development branch** adds **local LLM-driven extraction**: the model reads up to five manually selected emails together and proposes *zero, one or multiple* tasks, context-specific categories, deadlines and related-event groupings. The backend validates JSON structure, source IDs, date format and source quotations; tasks remain editable and **nothing is saved until approved**.
 
-More recently, I built **Smart Inbox Radar** to surface possible subscription renewals, bills, trial endings, luggage pickups, flight check-ins, appointments, package pickups, and document deadlines. Testing actual workflows revealed useful edge cases: promotional credit offers looked like payment deadlines; repeated HTML and legal footers became phantom tasks; and a missed luggage pickup needed a *follow-up* label rather than another upcoming reminder. I added targeted regression tests and rules for those failures, including suppressing completed confirmations and consolidating related pickup notices.
+The model runs locally through Ollama without a paid AI endpoint. Automated backend/frontend checks pass, but **real-model accuracy has not been benchmarked**, and the first local inference encountered an HTTP 503 that still needs runtime verification. The older keyword radar remains available while the LLM workflow is evaluated.
 
-It's still a **local, review-first prototype**, not a reliable audit of everything due in a mailbox. Scans are limited, date extraction can miss details, and financial or travel alerts need verification with the original provider.
+[See the v5 implementation and setup](https://github.com/charithreddy9/ActionInbox/tree/feature/llm-email-intelligence) · [Automated checks](https://github.com/charithreddy9/ActionInbox/actions/workflows/ci.yml?query=branch%3Afeature%2Fllm-email-intelligence) · [Original stable baseline](https://github.com/charithreddy9/ActionInbox/tree/main)
 
-[Explore the stable baseline](https://github.com/charithreddy9/ActionInbox) · [Try the Smart Inbox Radar development branch](https://github.com/charithreddy9/ActionInbox/tree/feature/smart-inbox-radar) · [View test runs](https://github.com/charithreddy9/ActionInbox/actions)
-
-*The baseline stays on `main`; Gmail and Smart Inbox Radar are under active development on feature branches.*
 
 ## Other projects
 
@@ -60,15 +59,16 @@ It's still a **local, review-first prototype**, not a reliable audit of everythi
 - [Movie Recommendation](https://github.com/charithreddy9/Movie-recommendation) — a content-based recommendation prototype.
 - [RiskLens](https://github.com/charithreddy9/charithreddy9/tree/main/projects/risklens) — an ML dashboard built with synthetic transaction data.
 
-## What I use
+## Engineering toolkit
 
-- **Python and ML:** scikit-learn, NumPy, model evaluation, embeddings, information retrieval
-- **Backend:** FastAPI, Java, Spring Boot, SQL, REST APIs
-- **Frontend:** React, JavaScript, TypeScript
-- **Development:** Git, GitHub Actions, Docker, automated tests, AWS and Azure
+- **AI / ML:** scikit-learn, local LLM inference with Ollama, embeddings, hybrid retrieval, calibration, conformal prediction and model evaluation
+- **Backend / data:** Python, FastAPI, Java, Spring Boot, SQL, SQLite, REST APIs
+- **Frontend:** React, JavaScript and TypeScript
+- **Shipping and verification:** Docker, GitHub Actions, pytest, reproducible experiments, AWS and Azure
 
-## What I'm learning next
+## Current engineering priorities
 
-I'm working toward more independent evaluation for EvidenceDesk, more realistic distribution shifts for ShiftScope, and a better way for ActionInbox to distinguish an upcoming obligation from a confirmation, advertisement, or already-failed event. For ActionInbox, the next step is to measure real extraction errors before adding notifications or more automation.
+My next focus is **measuring ActionInbox's real-model task extraction quality** (false positives, multi-task recall, deadline association, and latency), **evaluating EvidenceDesk on independently labeled unseen documents**, and **extending ShiftScope beyond synthetic image noise**.
 
-I'm interested in **AI/ML engineering, applied ML research, and backend software engineering**. I enjoy work where I can build the system, test the assumptions behind it, and explain what the results actually mean.
+I'm interested in **AI/ML engineering, applied ML research and backend software engineering**, especially roles that combine reliable models with strong software engineering.
+
