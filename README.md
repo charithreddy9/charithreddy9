@@ -38,19 +38,21 @@ It's a deliberately small experiment, but I wanted to make the methodology and l
 
 [Read the research notes](https://github.com/charithreddy9/ShiftScope/blob/main/RESEARCH.md) · [See the results and plots](https://github.com/charithreddy9/ShiftScope/blob/main/results/report.md) · [Source code](https://github.com/charithreddy9/ShiftScope)
 
-### [ActionInbox](https://github.com/charithreddy9/ActionInbox) — Turning emails into tasks, without losing control
+### [ActionInbox](https://github.com/charithreddy9/ActionInbox) — A quieter way to turn inbox reminders into tasks
 
-**Python, FastAPI, scikit-learn, React, SQLite**
+**Python, FastAPI, scikit-learn, React, SQLite, Gmail API (optional)**
 
-I wanted a simple way to pull follow-ups out of emails without giving an app permission to do things automatically.
+ActionInbox started as a local tool for turning a pasted email into a task I could review before saving. The first version used a small TF-IDF classifier and date rules; it scored **21/27 on an author-written synthetic category check**. That result exposed a bigger challenge than making a polished interface: a classifier can confidently mistake informational messages for things you need to do.
 
-ActionInbox takes pasted email text or an `.eml` file and suggests an action, category, and possible due date. It shows the supporting text, then lets you edit or dismiss the suggestion before anything is saved.
+I added optional **read-only Gmail access** on a separate development branch. You choose when to search or scan, inspect the original message, correct suggested dates and categories, and explicitly approve any task saved to local SQLite. The app doesn't send email, change your inbox, scan in the background, or call a paid AI service.
 
-The first classifier got **21 out of 27** hand-written synthetic test messages right. That's not enough to trust it on a real inbox, and the mistakes are worth looking at. I included the evaluation report and confusion matrix for that reason.
+More recently, I built **Smart Inbox Radar** to surface possible subscription renewals, bills, trial endings, luggage pickups, flight check-ins, appointments, package pickups, and document deadlines. Testing actual workflows revealed useful edge cases: promotional credit offers looked like payment deadlines; repeated HTML and legal footers became phantom tasks; and a missed luggage pickup needed a *follow-up* label rather than another upcoming reminder. I added targeted regression tests and rules for those failures, including suppressing completed confirmations and consolidating related pickup notices.
 
-There isn't a Gmail connection or automatic sending in this version. Keeping it local and review-first was a conscious choice.
+It's still a **local, review-first prototype**, not a reliable audit of everything due in a mailbox. Scans are limited, date extraction can miss details, and financial or travel alerts need verification with the original provider.
 
-[Explore ActionInbox](https://github.com/charithreddy9/ActionInbox) · [Evaluation notes](https://github.com/charithreddy9/ActionInbox/blob/main/research/RESEARCH.md) · [CI checks](https://github.com/charithreddy9/ActionInbox/actions)
+[Explore the stable baseline](https://github.com/charithreddy9/ActionInbox) · [Try the Smart Inbox Radar development branch](https://github.com/charithreddy9/ActionInbox/tree/feature/smart-inbox-radar) · [View test runs](https://github.com/charithreddy9/ActionInbox/actions)
+
+*The baseline stays on `main`; Gmail and Smart Inbox Radar are under active development on feature branches.*
 
 ## Other projects
 
@@ -67,6 +69,6 @@ There isn't a Gmail connection or automatic sending in this version. Keeping it 
 
 ## What I'm learning next
 
-I want to test EvidenceDesk against documents I haven't used while developing it, try ShiftScope on more realistic kinds of distribution shift, and improve ActionInbox's handling of ambiguous requests and dates.
+I'm working toward more independent evaluation for EvidenceDesk, more realistic distribution shifts for ShiftScope, and a better way for ActionInbox to distinguish an upcoming obligation from a confirmation, advertisement, or already-failed event. For ActionInbox, the next step is to measure real extraction errors before adding notifications or more automation.
 
 I'm interested in **AI/ML engineering, applied ML research, and backend software engineering**. I enjoy work where I can build the system, test the assumptions behind it, and explain what the results actually mean.
